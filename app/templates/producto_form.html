@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ titulo }}{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>{{ titulo }}</h2>
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="field">
+      {{ form.nombre.label }} {{ form.nombre(class="input") }}
+      {% for e in form.nombre.errors %}<small class="err">{{ e }}</small>{% endfor %}
+    </div>
+    <div class="field">
+      {{ form.marca.label }} {{ form.marca(class="input") }}
+    </div>
+    <div class="field">
+      {{ form.categoria.label }} {{ form.categoria(class="input") }}
+    </div>
+    <div class="row-2">
+      <div class="field">
+        {{ form.precio.label }} {{ form.precio(class="input", step="0.01") }}
+        {% for e in form.precio.errors %}<small class="err">{{ e }}</small>{% endfor %}
+      </div>
+      <div class="field">
+        {{ form.stock.label }} {{ form.stock(class="input") }}
+        {% for e in form.stock.errors %}<small class="err">{{ e }}</small>{% endfor %}
+      </div>
+    </div>
+    <div class="field">
+      {{ form.descripcion.label }} {{ form.descripcion(class="input", rows="3") }}
+    </div>
+    {{ form.submit(class="btn") }}
+    <a class="btn-outline" href="{{ url_for('main.dashboard') }}">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

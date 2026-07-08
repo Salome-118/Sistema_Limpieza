@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <h1>Gestiona tu inventario de productos de limpieza</h1>
+  <p>Registra productos, controla el stock y los precios en un solo lugar.
+     Con autenticación de usuarios, base de datos PostgreSQL y despliegue en Azure.</p>
+  <div class="hero-actions">
+    {% if current_user.is_authenticated %}
+      <a class="btn btn-lg" href="{{ url_for('main.dashboard') }}">Ir al inventario</a>
+    {% else %}
+      <a class="btn btn-lg" href="{{ url_for('auth.register') }}">Crear cuenta</a>
+      <a class="btn-outline btn-lg" href="{{ url_for('auth.login') }}">Iniciar sesión</a>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
