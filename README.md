@@ -214,3 +214,6 @@ flask --app wsgi init-db
 ## 9. Autora
 
 Esthelita Salomé Chicaiza Yupangui — Desarrollo de Software, ISTC CENESTUR.
+
+## Estado del proyecto
+Aplicaci�n funcional con login, CRUD de productos, tests y despliegue en Azure.
