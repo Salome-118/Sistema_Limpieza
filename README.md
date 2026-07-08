@@ -1,58 +1,69 @@
-Sistema de Productos de Limpieza — Aplicacion Web (LimpiaStock)
+# Sistema de Productos de Limpieza — Aplicación Web (LimpiaStock)
 
-Aplicacion web para gestionar el inventario de un negocio de productos de limpieza,
-con autenticacion de usuarios y CRUD de productos, desarrollada como proyecto final
-de la carrera de Desarrollo de Software (ISTC CENESTUR). Incluye control de versiones
-con flujo de ramas, tests automaticos, integracion continua (CI) y despliegue en
-Azure App Service.
+Aplicación web con autenticación de usuarios y CRUD de productos de limpieza, desarrollada como proyecto final de la carrera de Desarrollo de Software (ISTC CENESTUR). Incluye control de versiones con flujo de ramas, tests automáticos, integración continua (CI) y despliegue en Azure App Service.
 
+---
 
-1. Stack tecnologico
+## 1. Stack tecnológico (respuestas a lo que pide el proyecto)
 
-PreguntaRespuestaTipo de aplicacionAplicacion web completa (backend + frontend).Lenguaje y versionPython 3.12FrameworkFlask 3.0ORM y comandoSQLAlchemy (via Flask-SQLAlchemy). Crear tablas: flask --app wsgi init-db. Migraciones: flask db init, flask db migrate, flask db upgrade.Base de datosPostgreSQL 16 (Azure Database for PostgreSQL Flexible Server). En local se usa SQLite automaticamente.RepositorioGitHub con rama main protegida y trabajo mediante ramas + Pull Requests.Servidor de produccionGunicorn sobre Azure App Service.
+| Pregunta | Respuesta |
+|---|---|
+| ¿Es una aplicación web? | Sí, aplicación web completa (backend + frontend). |
+| Lenguaje y versión | **Python 3.12** |
+| Framework | **Flask 3.0** |
+| ORM y comando | **SQLAlchemy** (vía Flask-SQLAlchemy). El comando para crear las tablas es `flask --app wsgi init-db`. Para migraciones se usa Flask-Migrate: `flask db init`, `flask db migrate`, `flask db upgrade`. |
+| Base de datos y versión | **PostgreSQL 16** (Azure Database for PostgreSQL Flexible Server). En local se usa SQLite automáticamente para poder probar sin configurar nada. |
+| Repositorio | GitHub con rama `main` protegida y trabajo mediante ramas + Pull Requests. |
+| Servidor de producción | Gunicorn sobre Azure App Service. |
 
+> Nota: el proyecto también podría hacerse en PHP + Laravel. Aquí se eligió Python + Flask porque es el stack con el que ya se tiene experiencia previa (Flask, PostgreSQL y Azure), lo que reduce el riesgo para la entrega.
 
-2. Que hace la aplicacion
+---
 
+## 2. ¿Qué hace la aplicación?
 
-Registro de usuarios (contrasena cifrada, nunca en texto plano).
-Formulario de login que valida credenciales e inicia sesion.
-Panel de inventario protegido: solo accesible con sesion iniciada.
-CRUD de productos de limpieza: agregar, listar, buscar, editar y eliminar.
-Campos por producto: nombre, marca, categoria, precio y stock.
-Alerta visual de "stock bajo" cuando quedan 5 unidades o menos.
-Cada usuario gestiona su propio inventario.
-Cierre de sesion.
+- Registro de usuarios (con contraseña cifrada, nunca en texto plano).
+- **Formulario de login** que valida credenciales e inicia sesión.
+- Panel de inventario protegido: solo accesible con sesión iniciada.
+- CRUD de productos de limpieza: agregar, listar, buscar, editar y eliminar.
+- Campos por producto: nombre, marca, categoría, precio y stock.
+- Alerta visual de "stock bajo" cuando quedan 5 unidades o menos.
+- Cada usuario gestiona su propio inventario.
+- Cierre de sesión.
 
+---
 
+## 3. Estructura del proyecto
 
-3. Estructura del proyecto
-
+```
 sistema-limpieza/
-    app/
-        __init__.py        Fabrica de la app (application factory)
-        config.py          Configuracion (lee DATABASE_URL del entorno)
-        models.py          Modelos ORM: User, Producto
-        forms.py           Formularios (login, registro, producto)
-        routes/
-            auth.py        Rutas: registro, login, logout
-            main.py        Rutas: inicio, inventario, CRUD de productos
-        templates/         Plantillas HTML (Jinja2)
-        static/css/        Estilos
-    tests/                 Pruebas con pytest (10 tests)
-    .github/workflows/
-        ci.yml             Integracion continua (corre los tests en cada PR)
-    requirements.txt       Dependencias
-    wsgi.py                Punto de entrada
-    startup.sh             Comando de arranque en Azure
-    .env.example           Plantilla de variables de entorno
-    .gitignore
-    README.md
+├── app/
+│   ├── __init__.py        # Fábrica de la app (application factory)
+│   ├── config.py          # Configuración (lee DATABASE_URL del entorno)
+│   ├── models.py          # Modelos ORM: User, Producto
+│   ├── forms.py           # Formularios (login, registro, producto)
+│   ├── routes/
+│   │   ├── auth.py        # Rutas: registro, login, logout
+│   │   └── main.py        # Rutas: inicio, inventario, CRUD de productos
+│   ├── templates/         # Plantillas HTML (Jinja2)
+│   └── static/css/        # Estilos
+├── tests/                 # Pruebas con pytest (10 tests)
+├── .github/workflows/
+│   └── ci.yml             # Integración continua (corre los tests en cada PR)
+├── requirements.txt       # Dependencias
+├── wsgi.py                # Punto de entrada
+├── startup.sh             # Comando de arranque en Azure
+├── .env.example           # Plantilla de variables de entorno
+├── .gitignore
+└── README.md
+```
 
+---
 
-4. Como ejecutar en local
+## 4. Cómo ejecutar en local (paso a paso)
 
-bash# 1. Clonar el repositorio
+```bash
+# 1. Clonar el repositorio
 git clone https://github.com/Salome-118/Sistema_Limpieza.git
 cd Sistema_Limpieza
 
@@ -69,100 +80,109 @@ copy .env.example .env       # En Windows
 # 5. Crear las tablas de la base de datos
 flask --app wsgi init-db
 
-# 6. Arrancar la aplicacion
+# 6. Arrancar la aplicación
 python wsgi.py
+```
 
-Abrir el navegador en http://127.0.0.1:5000
+Abrir el navegador en **http://127.0.0.1:5000**.
 
+---
 
-Nota: si tu Python es muy reciente y falla la instalacion de psycopg2-binary,
-puedes instalar en local sin esa libreria (solo se necesita en Azure):
-pip install Flask Flask-SQLAlchemy Flask-Migrate Flask-Login Flask-WTF email-validator python-dotenv pytest
+## 5. Ejecutar los tests
 
+```bash
+pytest -v
+```
 
+Los tests validan: página de inicio, apertura del formulario de login, registro, login correcto e incorrecto, protección del inventario y el CRUD de productos.
 
+---
 
-5. Ejecutar los tests
+## 6. Flujo de trabajo con Git (ramas, nada directo a main)
 
-bashpytest -v
+**Regla de oro: nunca se hace push directo a `main`.** Todo el trabajo se hace en ramas y se integra a `main` mediante Pull Request, solo si los tests pasan.
 
-Los tests validan: pagina de inicio, apertura del formulario de login, registro,
-login correcto e incorrecto, proteccion del inventario y el CRUD de productos.
+### 6.1 Proteger la rama main en GitHub
 
+En GitHub: **Settings → Branches → Add classic branch protection rule** y sobre `main`:
+- Activar *Require a pull request before merging*.
+- Activar *Require status checks to pass before merging*.
 
-6. Flujo de trabajo con Git (nada directo a main)
+Así GitHub bloquea cualquier push directo a `main` y exige PR + tests en verde.
 
-Regla de oro: nunca se hace push directo a main. Todo el trabajo se hace en ramas
-y se integra a main mediante Pull Request, solo si los tests pasan.
+### 6.2 Trabajar una funcionalidad
 
-6.1 Proteger la rama main en GitHub
-
-En GitHub: Settings -> Branches -> Add classic branch protection rule, sobre main:
-
-
-Activar "Require a pull request before merging".
-Activar "Require status checks to pass before merging".
-
-
-6.2 Trabajar una funcionalidad
-
-bash# 1. Crear una rama para la funcionalidad
+```bash
+# 1. Crear una rama para la funcionalidad
 git checkout -b feature/nombre-funcionalidad
 
-# 2. Hacer los cambios en local y probarlos...
+# 2. Hacer los cambios en la computadora (local) y probarlos...
 
 # 3. Guardar y subir a GitHub
 git add .
-git commit -m "feat: descripcion del cambio"
+git commit -m "feat: descripción del cambio"
 git push -u origin feature/nombre-funcionalidad
 
 # 4. En GitHub: abrir un Pull Request de la rama hacia main
-#    -> GitHub Actions ejecuta los tests automaticamente
-#    -> Si los tests pasan, se aprueba el merge
+#    -> GitHub Actions ejecuta los tests automáticamente
+#    -> Si los tests pasan (check en verde), se aprueba el merge
 #    -> Merge del Pull Request a main
 
 # 5. Volver a main y actualizar en local
 git checkout main
 git pull origin main
+```
 
-Este es el ciclo que pide el proyecto: cambio local -> subir a GitHub ->
-aprobar los tests -> aprobar el merge -> deploy.
+Este es exactamente el ciclo que pide el proyecto: cambio local → subir a GitHub → aprobar los tests → aprobar el merge → deploy.
 
+---
 
-7. Despliegue en Azure App Service
+## 7. Despliegue en Azure App Service (deploy)
 
+### 7.1 Crear la base de datos PostgreSQL
 
-Crear un Azure Database for PostgreSQL Flexible Server y una base de datos (ej. limpiezadb).
-En Networking, permitir el acceso desde servicios de Azure.
-Crear un App Service con pila de ejecucion Python 3.12 en Linux.
-En Configuracion -> Configuracion de la aplicacion, agregar:
+1. En el portal de Azure, crear un **Azure Database for PostgreSQL Flexible Server**.
+2. Crear una base de datos (por ejemplo `limpiezadb`).
+3. En *Networking*, permitir el acceso desde servicios de Azure.
+4. Anotar la cadena de conexión.
 
-SECRET_KEY = una clave larga y aleatoria.
-DATABASE_URL = postgresql://USUARIO:PASSWORD@SERVIDOR.postgres.database.azure.com:5432/limpiezadb?sslmode=require
+### 7.2 Crear el App Service
 
+1. Crear un **App Service** con pila de ejecución **Python 3.12** en Linux.
+2. En **Configuración → Configuración de la aplicación**, agregar:
+   - `SECRET_KEY` = una clave larga y aleatoria.
+   - `DATABASE_URL` = `postgresql://USUARIO:PASSWORD@SERVIDOR.postgres.database.azure.com:5432/limpiezadb?sslmode=require`
+3. En **Configuración → Configuración general → Comando de inicio**, poner: `startup.sh`
 
+### 7.3 Conectar el despliegue con GitHub
 
-En Configuracion -> Configuracion general -> Comando de inicio, poner: startup.sh
-En el Centro de implementacion, conectar el repositorio de GitHub y la rama main.
-La primera vez, crear las tablas por SSH: flask --app wsgi init-db
+1. En el App Service ir a **Centro de implementación (Deployment Center)**.
+2. Elegir **GitHub** como origen y seleccionar el repositorio y la rama `main`.
+3. Azure despliega automáticamente cada vez que se hace merge a `main`.
 
+Resultado del flujo completo: cambio local → push a rama → PR → tests aprobados → merge a main → Azure despliega automáticamente la nueva versión.
 
-Flujo completo: cambio local -> push a rama -> PR -> tests aprobados -> merge a main ->
-Azure despliega automaticamente.
+### 7.4 Crear las tablas en producción
 
+La primera vez, ejecutar la creación de tablas contra la base de Azure (por SSH desde el portal del App Service):
 
-8. Seguridad y buenas practicas
+```bash
+flask --app wsgi init-db
+```
 
+---
 
-Contrasenas cifradas con hash (nunca en texto plano).
-Credenciales fuera del codigo: se leen de variables de entorno.
-.env excluido del repositorio mediante .gitignore.
-Proteccion CSRF en los formularios (Flask-WTF).
-Rama main protegida: solo se integra codigo probado.
-Tests automaticos ejecutados en cada Pull Request (CI).
+## 8. Seguridad y buenas prácticas aplicadas
 
+- Contraseñas cifradas con hash (nunca en texto plano).
+- Credenciales fuera del código: se leen de variables de entorno.
+- `.env` excluido del repositorio mediante `.gitignore`.
+- Protección CSRF en los formularios (Flask-WTF).
+- Rama `main` protegida: solo se integra código probado.
+- Tests automáticos ejecutados en cada Pull Request (CI).
 
+---
 
-9. Autora
+## 9. Autora
 
-Esthelita Salome Chicaiza Yupangui — Desarrollo de Software, ISTC CENESTUR.
+Esthelita Salomé Chicaiza Yupangui — Desarrollo de Software, ISTC CENESTUR.
